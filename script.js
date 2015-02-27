@@ -7,11 +7,8 @@ function updateCanvas() {
     var temp = 0;
     playersObj.forEach(function(playerobj){
             temp = temp + 1;
-			ctx.fillStyle = playerobj.color;
+            ctx.fillStyle = playerobj.color;
             ctx.fillRect(playerobj.x, playerobj.y, 50, 50);
-            if(playerobj.id === 2) {
-                ctx.fillStyle = 'Red';
-            }
     });
     window.requestAnimationFrame(updateCanvas);
 }	
@@ -20,25 +17,25 @@ var jsonObj = {
 	"players":[
 		{
 			"id":55,
-			"color":"#000000",
+			"color":"#8E0000",
 			"x":0,
 			"y":0
 		},
 		{
 			"id":2,
-			"color":"#000000",
+			"color":"#8A00B8",
 			"x":10,
 			"y":10
 		},
 		{
 			"id":104,
-			"color":"#000000",
+			"color":"#0029A3",
 			"x":30,
 			"y":10
 		},
 		{
 			"id":44,
-			"color":"#000000",
+			"color":"#00B200",
 			"x":50,
 			"y":10
 		}
