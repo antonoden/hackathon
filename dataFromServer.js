@@ -7,6 +7,7 @@
   
   socket.on("gameState", function(data){
   console.log(data);
+  playersObj = data.players;
   
   paintRec(data);
   
