@@ -1,0 +1,218 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<meta charset="UTF-8">
+		<title>P0|\|9</title>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js" type="text/javascript"></script>
+		<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+		<style>
+			html, canvas{
+				text-align: 	center;
+				padding: 		0;
+				margin:			0;
+				background: 	black;
+				font-family: 	'Press Start 2P', cursive;
+			}
+
+			h1{
+				padding:	0;
+				margin:		0;
+				position: 	absolute;
+				top: 		10px;
+				left: 		10px;
+				font-size: 	70px;
+				color: 		rgba(0,255,0,0.3);
+				text-shadow: 0px 0px 15px rgba(0, 255, 0, 0.7);
+			}
+
+			canvas{
+				max-width: 	100%;
+				max-height:	100%;
+				margin:		20px auto;
+				padding: 	0;
+			}
+
+			.playerDisp{
+				color: 			rgba(0,255,0,0.1);
+				text-shadow: 	0px 0px 15px rgba(0, 255, 0, 0.2);
+				font-size: 		50px;
+				position: 		absolute;
+				right:			10px;
+				top:			10px;
+				text-align: 	right;
+			}
+
+			#p1,#p2{
+				transition: 600ms;
+				-webkit-transition: 600ms; /* Safari */
+			}
+
+			.online{
+				text-shadow: 	0px 0px 15px rgba(0, 255, 0, 0.7);
+				color: 			rgba(0,255,0,0.3);
+			}
+
+			.you:before{
+				content: ">>";
+			}
+
+			@media screen and (max-width: 1600px){
+				h1, .playerDisp{
+					display: none;
+				}
+			}
+
+			#stripes{
+				pointer-events: none;
+				opacity: 		0.3;
+			}
+
+			.stripe{
+				background: #171717;
+				width: 		100%;
+				height: 	1px;
+				position: 	absolute;
+				left: 		0;
+				z-index: 	2;
+				box-shadow: 0px 0px 5px rgba(0,0,0,0.7);
+			}
+		</style>
+	</head>
+	<body>
+	<h1>P0|\|9</h1>
+	<div class="playerDisp">
+		<div id="p1">Player 1</div>
+		<div id="p2">Player 2</div>
+	</div>
+	<canvas id="canvas" width=800 height=720></canvas>
+	<div id="stripes"></div>
+	<script>
+		$(function() {//draw stripes
+			var x = 0;
+			while(x<$( window ).height()){
+				x = x +12;	
+		  		$('#stripes').append("<div class='stripe' style='top: " + x + "px'>");
+		  	}
+		});
+
+		var objects = [];//{x,y,width,height,speed}
+		var clientId = null;
+		var players = [];
+
+		// Handle keyboard controls
+		var keysDown = {};
+
+		addEventListener("keydown", function (e) {
+			keysDown[e.keyCode] = true;
+		}, false);
+
+		addEventListener("keyup", function (e) {
+			delete keysDown[e.keyCode];
+		}, false);
+		
+		//handle touch controls
+		var touchX = null;
+		
+		function updateTouch(e) {
+			e.preventDefault();
+			if(e.changedTouches[0] != null){
+				touchX = (e.changedTouches[0].pageX/$(window).width())*canvas.width;
+			}
+		};
+		
+		addEventListener("touchstart", updateTouch, false);
+		addEventListener("touchend", updateTouch, false);
+		addEventListener("touchcancel", updateTouch, false);
+		addEventListener("touchmove", updateTouch, false);
+			
+
+		function isPlayer(num){
+			return players[num-1]==clientId;
+		}
+
+		function playerNum(){
+			return isPlayer(1) ? 1 : isPlayer(2) ? 2 : 0
+		}
+
+		function rightEdge(object){
+			return object.x+object.width;
+		}
+		
+		function center(object){
+			return object.x+object.width/2;
+		}
+
+		function leftEdge(object){
+			return object.x;
+		}
+
+		//Rendering
+		var canvas = $("#canvas")[0];
+		var ctx = canvas.getContext('2d');
+		ctx.fillStyle     = 'green';
+		ctx.shadowBlur    = 15;
+		ctx.shadowColor   = 'rgba(0, 255, 0, 0.7)';
+
+		function draw(ctx){//draw all objects
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			var temp = 0;
+			objects.forEach(function(object){
+				temp = temp + 1;
+				ctx.fillRect(object.x, object.y, object.width, object.height);
+			});
+		}
+
+		//Serverconnection
+		var socket = io.connect();
+
+		socket.on('updateClient', function(obj){//called to update gamestate
+			if(playerNum() != 0 &&  objects.length){
+				obj[playerNum()] = objects[playerNum()];//overwrite own paddle.
+			}
+			objects = obj;
+		});
+
+		socket.on('setId', function(id){//called when connected to server to ID self
+			clientId = id;
+		});
+
+		socket.on('updateInfo', function(info){//called once every second to keep track of info
+			players = info.players;
+			$('.playerDisp div').removeClass('online you');
+			if(players[0]){
+				$('#p1').addClass('online');
+			}
+			if(players[1]){
+				$('#p2').addClass('online');
+			}
+
+			if(isPlayer(1)){
+				$('#p1').addClass('you');
+			}else if(isPlayer(2)){
+				$('#p2').addClass('you');
+			}
+		});
+
+		var now, then;
+		function update(){
+			if(!objects.length){return;}//if we dont have any objects there is nothing to update
+			var paddle = 	objects[playerNum()];
+			now = 		Date.now();
+			var modifier = 	(now - then)/1000;
+			if ((37 in keysDown || touchX < leftEdge(paddle)) && leftEdge(paddle) > rightEdge(objects[3])) { // Player holding left && pad is on canvas
+				paddle.x -= paddle.speed * modifier;
+		    }
+		    if ((39 in keysDown || touchX > rightEdge(paddle)) && rightEdge(paddle) < leftEdge(objects[4])) { // Player holding right && pad is on canvas
+		    	paddle.x += paddle.speed * modifier;
+		    }
+			
+			socket.emit('updateServer',paddle);
+		    then = now;
+		}
+		then = Date.now();
+		setInterval(function(){update();},1000/60);
+		setInterval(function(){draw(ctx)},1000/60);
+    </script>
+	</body>
+</html>
