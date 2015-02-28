@@ -1,2 +1,2 @@
-This needs socket.io installed to run
+Install socket.io to run with node.js
 
