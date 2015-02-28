@@ -8,32 +8,33 @@ var input = {
     moveDirection: 0,
     rotDirection: 0
 };
+
 var playersObj;
 updateCanvas();
+
 function updateCanvas() {
     if(playersObj) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     playersObj.forEach(function(playerobj){
             //ctx.rotate((playerobj.rotation+2)*Math.PI/180);
+            
             ctx.fillStyle = playerobj.color;
-            ctx.fillRect(
-                    playerobj.x-(playerobj.size/2), 
-                    playerobj.y-(playerobj.size/2),
-                    playerobj.size,
-                    playerobj.size);
+            ctx.beginPath();
+            ctx.arc(playerobj.x, playerobj.y, playerobj.radius, 0, 2*Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.fill();
+//            ctx.fillRect(
+//                    playerobj.x-(playerobj.size/2), 
+//                    playerobj.y-(playerobj.size/2),
+//                    playerobj.size,
+//                    playerobj.size);
             var pistolSize=75;
             ctx.beginPath();
             ctx.moveTo(playerobj.x,playerobj.y);
             ctx.lineTo(playerobj.x + pistolSize*Math.cos(playerobj.rotation)
                     ,playerobj.y + pistolSize*Math.sin(playerobj.rotation));
             ctx.stroke();
-//            ctx.fillRect(
-//                    playerobj.x, 
-//                    playerobj.y-playerobj.size/8,
-//                    playerobj.size,
-//                    playerobj.size/4);
-                    
-            //ctx.rotate(-((playerobj.rotation+2)*Math.PI/180));
             
             
     });
