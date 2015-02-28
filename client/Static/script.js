@@ -49,10 +49,10 @@ function randomPlayerName() {
     var playerName;
     switch(random) {
         case 1:
-            playerName = "Hot Lady";
+            playerName = "Göran Hägglund";
             break;
         case 2:
-            playerName = "Gamerboy";
+            playerName = "Noname";
             break;
         case 3:
             playerName = "Arnold";
@@ -132,10 +132,10 @@ window.onkeydown = function(e) {
         case 57:    // key '9'
             setWeaponSound("Party Horn");
             break;
-    }
-    if(key === 32) {    // spacekey
-        input.shoot = 1;
-        if(weaponsound) weaponsound.play();
+        case 32:    // key 'space'
+            input.shoot = 1;
+            if(weaponsound) weaponsound.play();
+            break;
     }
     
     return false;
@@ -147,15 +147,17 @@ window.onkeydown = function(e) {
 window.onkeyup = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     
-    /* movement keys */
-    if(key === 38 || key === 40) {  // key up or down 
-        input.moveDirection = 0;
-    }
-    if(key === 37|| key === 39) {   // key left or right
-        input.rotDirection = 0;
-    }
-    if(key === 32) {    // spacekey
-        input.shoot = 0;
+    switch(e.keyCode) 
+    {
+        case 38 || 40: // key up or down
+            input.moveDirection = 0;
+            break;
+        case 37 || 39: // key left or right
+            input.rotDirection = 0;
+            break;
+        case 32: // spacekey
+            input.shoot = 0;
+            break;
     }
     return false;
 };

@@ -48,6 +48,7 @@ function drawPlayers(ctx)
 function drawKilledLines(ctx, playerobj)
 {
     ctx.fillStyle = "#000000";
+    ctx.lineWidth = 5;
     ctx.beginPath();
     ctx.moveTo(
             playerobj.x-playerobj.radius-10,
@@ -55,9 +56,7 @@ function drawKilledLines(ctx, playerobj)
     ctx.lineTo(
             playerobj.x + playerobj.radius+10,
             playerobj.y - playerobj.radius-10);
-    ctx.lineWidth = 5;
     ctx.stroke();
-    ctx.fillStyle = "#000000";
     ctx.beginPath();
     ctx.moveTo(
             playerobj.x-playerobj.radius-10,
@@ -65,7 +64,6 @@ function drawKilledLines(ctx, playerobj)
     ctx.lineTo(
             playerobj.x + playerobj.radius+10,
             playerobj.y + playerobj.radius+10);
-    ctx.lineWidth = 5;
     ctx.stroke();
 }
 
