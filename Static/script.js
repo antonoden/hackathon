@@ -86,6 +86,7 @@ function setPlayerName(playerName) {
     
     socket.emit("updatePlayerName", playerName);
 }
+
 function setWeaponSound(sound)
 {
     if(sound === "Party Horn") {
@@ -96,6 +97,8 @@ function setWeaponSound(sound)
     }
     else if(sound === "Bullet Whizzing") {
         weaponsound = document.getElementById("audio_Bullet_Whizzing");
+    } else {
+        weaponsound = undefined;
     }
 }
 /* Key down events 
@@ -117,10 +120,13 @@ window.onkeydown = function(e) {
         case 39:    // rightkey
             input.rotDirection = +1;
             break;
-        case 65:    // key 'a'
+        case 83:    // key 'a'
+            setWeaponSound("");
+            break;
+        case 55:    // key '7'
             setWeaponSound("50 Cal Machine");
             break;
-        case 83:    // key 's'
+        case 56:    // key '8'
             setWeaponSound("Bullet Whizzing");
             break;
         case 57:    // key '9'

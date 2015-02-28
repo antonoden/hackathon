@@ -38,10 +38,36 @@ function drawPlayers(ctx)
             drawHead(ctx, playerobj);
             drawWeapon(ctx, playerobj);
             drawStats(ctx, playerobj);
+            if(playerobj.life <= 0) {
+                drawKilledLines(ctx, playerobj);
+            } 
         });
     }
 }
 
+function drawKilledLines(ctx, playerobj)
+{
+    ctx.fillStyle = "#000000";
+    ctx.beginPath();
+    ctx.moveTo(
+            playerobj.x-playerobj.radius-10,
+            playerobj.y+playerobj.radius+10);
+    ctx.lineTo(
+            playerobj.x + playerobj.radius+10,
+            playerobj.y - playerobj.radius-10);
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.fillStyle = "#000000";
+    ctx.beginPath();
+    ctx.moveTo(
+            playerobj.x-playerobj.radius-10,
+            playerobj.y-playerobj.radius-10);
+    ctx.lineTo(
+            playerobj.x + playerobj.radius+10,
+            playerobj.y + playerobj.radius+10);
+    ctx.lineWidth = 5;
+    ctx.stroke();
+}
 
 function drawPlayerName(ctx, playerobj) {
     ctx.font = "20px Georgia";
@@ -59,6 +85,7 @@ function drawHead(ctx, playerobj)
     ctx.beginPath();
     ctx.arc(playerobj.x, playerobj.y, playerobj.radius, 0, 2*Math.PI);
     ctx.closePath();
+    ctx.lineWidth = 10;
     ctx.stroke();
     ctx.fill();
     ctx.fillStyle = "#000000";
