@@ -15,17 +15,36 @@ var mapObj;
 updateCanvas();
 
 
+function getInfo() {
+    console.log(jsonObj);
+}
 /*****************************************************************************/
 function drawMap(ctx) {
     if(mapObj) {
         mapObj.forEach(function(obj) {
-            /* Paints rectangles */
-                ctx.fillStyle = obj.color;
-                ctx.fillRect(
-                    obj.x, 
-                    obj.y,
-                    obj.size.w,
-                    obj.size.h);
+            ctx.fillStyle = obj.color;
+            if(obj.type === "triangle") 
+            {
+                ctx.beginPath();
+                ctx.moveTo(obj.x, obj.y);
+                ctx.lineTo(obj.x+10, obj.y-10);
+                ctx.lineTo(obj.x-10, obj.y-10);
+                ctx.closePath();
+                ctx.fill();
+            }
+            else if(obj.type === "circle") 
+            {
+                ctx.beginPath();
+                ctx.arc(obj.x, obj.y, obj.size.radius, 0, 2*Math.PI);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.fill();
+            }
+            else // default type = rectangle
+            {
+                ctx.fillRect(obj.x, obj.y, obj.size.w, obj.size.h);
+            }
+            
         });
     }
 }
@@ -59,26 +78,32 @@ function drawPlayers(ctx)
     if(playersObj) 
     {
         playersObj.forEach(function(playerobj){
-            /* Paint person */
-            ctx.fillStyle = playerobj.color;
-            ctx.beginPath();
-            ctx.arc(playerobj.x, playerobj.y, playerobj.radius, 0, 2*Math.PI);
-            ctx.closePath();
-            ctx.stroke();
-            ctx.fill();
-            /* Paint gun */
-            var pistolSize=75;
-            ctx.beginPath();
-            ctx.moveTo(playerobj.x,playerobj.y);
-            ctx.lineTo(playerobj.x + pistolSize*Math.cos(playerobj.rotation)
-                    ,playerobj.y + pistolSize*Math.sin(playerobj.rotation));
-            ctx.stroke();
+            drawHead(ctx);
+            drawWeapon(ctx);
         });
     }
 }
 
-function getInfo() {
-    console.log(jsonObj);
+function drawHead(ctx)
+{
+    ctx.fillStyle = playerobj.color;
+    ctx.beginPath();
+    ctx.arc(playerobj.x, playerobj.y, playerobj.radius, 0, 2*Math.PI);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+}
+
+function drawWeapon(ctx)
+{
+    var pistolSize=75;
+    ctx.fillStyle = playerobj.color;
+    ctx.beginPath();
+    ctx.moveTo(playerobj.x,playerobj.y);
+    ctx.lineTo(playerobj.x + pistolSize*Math.cos(playerobj.rotation)
+            ,playerobj.y + pistolSize*Math.sin(playerobj.rotation));
+    ctx.lineWidth = 15;
+    ctx.stroke();
 }
 
 function drawProjectiles(ctx)
