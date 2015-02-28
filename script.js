@@ -5,6 +5,7 @@ var ctx = canvas.getContext("2d");
 var jsonObj;
 var playersObj;
 var mapObj;
+var weaponsound;
 
 var input = {
     moveDirection: 0,
@@ -146,6 +147,18 @@ function drawProjectiles(ctx)
     }
 }
 
+function setWeaponSound(sound)
+{
+    if(sound === "Party Horn") {
+        weaponsound = document.getElementById("audio_Party_Horn");
+    }
+    else if(sound === "50 Cal Machine") {
+        weaponsound = document.getElementById("audio_50_Cal_Machine_Gun");
+    }
+    else if(sound === "Bullet Whizzing") {
+        weaponsound = document.getElementById("audio_Bullet_Whizzing");
+    }
+}
 /* Key down events 
  * 
  */
@@ -168,7 +181,7 @@ window.onkeydown = function(e) {
     
     if(key === 32) {
         input.shoot = 1;
-        document.getElementById('otheraudio').play();
+        weaponsound.play();
     }
     
     return false;
