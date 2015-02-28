@@ -78,11 +78,6 @@ function updateServer(input)
     input.shoot = 0;
 }
 
-function clearCanvas(ctx) 
-{
-    
-}
-
 function drawPlayers(ctx)
 {
     if(playersObj) 
@@ -165,21 +160,31 @@ function setWeaponSound(sound)
 window.onkeydown = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     
-    if(key === 38) {
-        input.moveDirection = 1;
+    switch(e.keyCode) {
+        case 38:    // upkey
+            input.moveDirection = 1;
+            break;
+        case 40:    // downkey
+            input.moveDirection = -1;
+            break;
+        case 37:    // leftkey
+            input.rotDirection = -1;
+            break;
+        case 39:    // rightkey
+            input.rotDirection = +1;
+            break;
+        case 65:    // key 'a'
+            setWeaponSound("50 Cal Machine");
+            break;
+        case 83:    // key 's'
+            setWeaponSound("Bullet Whizzing");
+            break;
+        case 57:    // key '9'
+            setWeaponSound("Party Horn");
+            break;
+            
     }
-    else if(key === 40) {
-        input.moveDirection = -1;
-    }
-    
-    if(key === 37) {
-        input.rotDirection = -1;
-    }
-    else if(key === 39) {
-        input.rotDirection = +1;
-    }
-    
-    if(key === 32) {
+    if(key === 32) {    // spacekey
         input.shoot = 1;
         weaponsound.play();
     }
@@ -193,13 +198,14 @@ window.onkeydown = function(e) {
 window.onkeyup = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     
-    if(key === 38 || key === 40) {
+    /* movement keys */
+    if(key === 38 || key === 40) {  // key up or down 
         input.moveDirection = 0;
     }
-    if(key === 37|| key === 39) {
+    if(key === 37|| key === 39) {   // key left or right
         input.rotDirection = 0;
     }
-    if(key === 32) {
+    if(key === 32) {    // spacekey
         input.shoot = 0;
     }
     return false;
