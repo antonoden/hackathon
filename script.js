@@ -52,9 +52,25 @@ function updateCanvas() {
             ctx.stroke();
         });
     }
+    drawProjectiles(ctx);
     socket.emit("update", input);
     input.shoot = 0;
     window.requestAnimationFrame(updateCanvas);
+}
+
+
+function drawProjectiles(ctx)
+{
+    console.log(jsonObj);
+    jsonObj.projectiles.forEach(function(projectile)
+    {
+            ctx.fillStyle="#FF0000";
+            ctx.beginPath();
+            ctx.arc(projectile.x, projectile.y, projectile.size, 0, 2*Math.PI);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.fill();
+    });
 }
 
 window.onkeydown = function(e) {
