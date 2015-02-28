@@ -37,7 +37,7 @@ function drawPlayers(ctx)
         playersObj.forEach(function(playerobj){
             drawHead(ctx, playerobj);
             drawWeapon(ctx, playerobj);
-            drawPlayerName(ctx, playerobj);
+            drawStats(ctx, playerobj);
         });
     }
 }
@@ -90,13 +90,23 @@ function drawProjectiles(ctx)
     {
         jsonObj.projectiles.forEach(function(projectile)
         {
-                ctx.fillStyle="#FF0000";
-                ctx.beginPath();
-                ctx.arc(projectile.x, projectile.y, projectile.radius, 0, 2*Math.PI);
-                ctx.closePath();
-                ctx.lineWidth = 15;
-                ctx.stroke();
-                ctx.fill();
+            ctx.fillStyle="#FF0000";
+            ctx.beginPath();
+            ctx.arc(projectile.x, projectile.y, projectile.radius, 0, 2*Math.PI);
+            ctx.closePath();
+            ctx.lineWidth = 15;
+            ctx.stroke();
+            ctx.fill();
         });
     }
+}
+
+function drawStats(ctx, playerobj)
+{
+    ctx.font = "20px Georgia";
+    ctx.fillText(
+        playerobj.displayName + ": " + playerobj.life, 
+        playerobj.x-(playerobj.radius/2), 
+        playerobj.y-playerobj.radius-20);
+        
 }
