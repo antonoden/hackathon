@@ -15,7 +15,7 @@ var input = {
 
 init();
 function init() {
-    setRandomPlayerName();
+    setPlayerName(randomPlayerName());
     updateCanvasLoop(ctx);
 };
 
@@ -24,7 +24,26 @@ function getInfo() {
 }
 /*****************************************************************************/
 
-function setRandomPlayerName() {
+function updateCanvasLoop() {
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    drawPlayers(ctx);
+    drawProjectiles(ctx);
+    drawMap(ctx);
+    
+    updateServer(input);
+    
+    window.requestAnimationFrame(updateCanvasLoop);
+}
+
+function updateServer(input) 
+{
+    socket.emit("update", input);
+    input.shoot = 0;
+}
+
+function randomPlayerName() {
     
     var random = Math.floor((Math.random() * 10) + 1);
     var playerName;
@@ -60,35 +79,13 @@ function setRandomPlayerName() {
             playerName = "Vlademir Putin";
             break;
     }
+    return playerName;
+}
+
+function setPlayerName(playerName) {
+    
     socket.emit("updatePlayerName", playerName);
 }
-
-function setPlayerName() {
-    
-    var playerName = prompt("Enter your name : ", "your name here");
-    
-    socket.emit("updatePlayerName", playerName);
-}
-
-function updateServer(input) 
-{
-    socket.emit("update", input);
-    input.shoot = 0;
-}
-
-function updateCanvasLoop() {
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    drawPlayers(ctx);
-    drawProjectiles(ctx);
-    drawMap(ctx);
-    
-    updateServer(input);
-    
-    window.requestAnimationFrame(updateCanvasLoop);
-}
-
 function setWeaponSound(sound)
 {
     if(sound === "Party Horn") {
