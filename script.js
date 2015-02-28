@@ -14,7 +14,6 @@ var input = {
 
 init();
 function init() {
-    setPlayerName();
     updateCanvas(ctx);
 };
 
@@ -112,6 +111,13 @@ function drawHead(ctx, playerobj)
     ctx.closePath();
     ctx.stroke();
     ctx.fill();
+    ctx.fillStyle = "#000000";
+    ctx.beginPath();
+    ctx.arc(playerobj.x, playerobj.y, playerobj.radius/4, 0, 2*Math.PI);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+    
 }
 
 function drawWeapon(ctx, playerobj)
