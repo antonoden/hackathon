@@ -32,13 +32,25 @@ function paintMap() {
 
 function updateCanvas() {
     
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearCanvas(ctx);
+    
     drawPlayers(ctx);
     drawProjectiles(ctx);
     
+    updateServer(input);
+    
+    window.requestAnimationFrame(updateCanvas);
+}
+
+function updateServer(input) 
+{
     socket.emit("update", input);
     input.shoot = 0;
-    window.requestAnimationFrame(updateCanvas);
+}
+
+function clearCanvas(ctx) 
+{
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawPlayers(ctx)
@@ -63,6 +75,7 @@ function drawPlayers(ctx)
         });
     }
 }
+
 function drawProjectiles(ctx)
 {
     if(jsonObj)
@@ -71,7 +84,7 @@ function drawProjectiles(ctx)
         {
                 ctx.fillStyle="#FF0000";
                 ctx.beginPath();
-                ctx.arc(projectile.x, projectile.y, projectile.size, 0, 2*Math.PI);
+                ctx.arc(projectile.x, projectile.y, projectile.radius, 0, 2*Math.PI);
                 ctx.closePath();
                 ctx.stroke();
                 ctx.fill();
@@ -106,6 +119,9 @@ window.onkeydown = function(e) {
     return false;
 };
 
+/* Key up events
+ * 
+ */
 window.onkeyup = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     
