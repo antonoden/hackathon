@@ -1,21 +1,21 @@
-
+/* Initing variables and functions */
 var canvas=document.getElementById("gameWindow");
 var ctx = canvas.getContext("2d");
-
-	
 
 var input = {
     moveDirection: 0,
     rotDirection: 0,
     shoot: 0
 };
-
 var jsonObj;
 var playersObj;
 var mapObj;
 
+/* function calls */
 updateCanvas();
 
+
+/*****************************************************************************/
 function paintMap() {
     if(mapObj) {
         mapObj.forEach(function(obj) {
@@ -33,11 +33,21 @@ function paintMap() {
 function updateCanvas() {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-/* Paint player */
-    if(playersObj) {
+    drawPlayers(ctx);
+    drawProjectiles(ctx);
+    
+    socket.emit("update", input);
+    input.shoot = 0;
+    window.requestAnimationFrame(updateCanvas);
+}
+
+function drawPlayers(ctx)
+{
+    if(playersObj) 
+    {
         playersObj.forEach(function(playerobj){
             /* Paint person */
-            ctx.fillStyle = playerobj.color;
+            ctx.fillStyle = 'black';
             ctx.beginPath();
             ctx.arc(playerobj.x, playerobj.y, playerobj.radius, 0, 2*Math.PI);
             ctx.closePath();
@@ -52,27 +62,26 @@ function updateCanvas() {
             ctx.stroke();
         });
     }
-    drawProjectiles(ctx);
-    socket.emit("update", input);
-    input.shoot = 0;
-    window.requestAnimationFrame(updateCanvas);
 }
-
-
 function drawProjectiles(ctx)
 {
-    console.log(jsonObj);
-    jsonObj.projectiles.forEach(function(projectile)
+    if(jsonObj)
     {
-            ctx.fillStyle="#FF0000";
-            ctx.beginPath();
-            ctx.arc(projectile.x, projectile.y, projectile.size, 0, 2*Math.PI);
-            ctx.closePath();
-            ctx.stroke();
-            ctx.fill();
-    });
+        jsonObj.projectiles.forEach(function(projectile)
+        {
+                ctx.fillStyle="#FF0000";
+                ctx.beginPath();
+                ctx.arc(projectile.x, projectile.y, projectile.size, 0, 2*Math.PI);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.fill();
+        });
+    }
 }
 
+/* Key down events 
+ * 
+ */
 window.onkeydown = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     
@@ -91,7 +100,7 @@ window.onkeydown = function(e) {
     }
     
     if(key === 32) {
-        shoot = +1;
+        input.shoot = 1;
     }
     
     return false;
@@ -107,7 +116,7 @@ window.onkeyup = function(e) {
         input.rotDirection = 0;
     }
     if(key === 32) {
-        shoot = 0;
+        input.shoot = 0;
     }
     return false;
 };
