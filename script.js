@@ -78,13 +78,21 @@ function drawPlayers(ctx)
     if(playersObj) 
     {
         playersObj.forEach(function(playerobj){
-            drawHead(ctx);
-            drawWeapon(ctx);
+            drawHead(ctx, playerobj);
+            drawWeapon(ctx, playerobj);
+            drawPlayerName(ctx, playerobj);
         });
     }
 }
 
-function drawHead(ctx)
+function drawPlayerName(ctx, playerobj) {
+    ctx.font = "20px Georgia";
+    ctx.fillText(
+            playerobj.name, 
+            playerobj.x-(playerobj.radius/2), 
+            playerobj.y-playerobj.radius-20);
+}
+function drawHead(ctx, playerobj)
 {
     ctx.fillStyle = playerobj.color;
     ctx.beginPath();
@@ -94,7 +102,7 @@ function drawHead(ctx)
     ctx.fill();
 }
 
-function drawWeapon(ctx)
+function drawWeapon(ctx, playerobj)
 {
     var pistolSize=75;
     ctx.fillStyle = playerobj.color;
