@@ -5,8 +5,7 @@
 var socket = io("http://91.123.198.103:8080");
   
  socket.on("updateMap", function(data){
-    mapObj = data.map;
-    paintMap();
+    mapObj = data.obstacles;
  });
  
   socket.on("gameState", function(data){

@@ -16,16 +16,16 @@ updateCanvas();
 
 
 /*****************************************************************************/
-function paintMap() {
+function drawMap(ctx) {
     if(mapObj) {
         mapObj.forEach(function(obj) {
             /* Paints rectangles */
                 ctx.fillStyle = obj.color;
                 ctx.fillRect(
-                    obj.x-(obj.size/2), 
-                    obj.y-(obj.size/2),
-                    obj.size,
-                    obj.size);
+                    obj.x, 
+                    obj.y,
+                    obj.size.w,
+                    obj.size.h);
         });
     }
 }
@@ -36,6 +36,7 @@ function updateCanvas() {
     
     drawPlayers(ctx);
     drawProjectiles(ctx);
+    drawMap(ctx);
     
     updateServer(input);
     
@@ -59,7 +60,7 @@ function drawPlayers(ctx)
     {
         playersObj.forEach(function(playerobj){
             /* Paint person */
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = playerobj.color;
             ctx.beginPath();
             ctx.arc(playerobj.x, playerobj.y, playerobj.radius, 0, 2*Math.PI);
             ctx.closePath();
@@ -74,6 +75,10 @@ function drawPlayers(ctx)
             ctx.stroke();
         });
     }
+}
+
+function getInfo() {
+    console.log(jsonObj);
 }
 
 function drawProjectiles(ctx)
@@ -117,6 +122,14 @@ window.onkeydown = function(e) {
     }
     
     return false;
+};
+
+window.onkeypress = function(e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+    
+    if(key === 32) {
+        input.shoot = 0;
+    }
 };
 
 /* Key up events
