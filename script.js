@@ -168,7 +168,7 @@ window.onkeydown = function(e) {
     
     if(key === 32) {
         input.shoot = 1;
-        document.getElementById('shootaudio').play();
+        document.getElementById('otheraudio').play();
     }
     
     return false;
