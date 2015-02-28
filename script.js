@@ -15,7 +15,8 @@ var input = {
 
 init();
 function init() {
-    updateCanvas(ctx);
+    setRandomPlayerName();
+    updateCanvasLoop(ctx);
 };
 
 function getInfo() {
@@ -40,6 +41,7 @@ function drawMap(ctx) {
                 ctx.beginPath();
                 ctx.arc(obj.x, obj.y, obj.size.radius, 0, 2*Math.PI);
                 ctx.closePath();
+                ctx.lineWidth = 0;
                 ctx.stroke();
                 ctx.fill();
             }
@@ -52,6 +54,45 @@ function drawMap(ctx) {
     }
 }
 
+function setRandomPlayerName() {
+    
+    var random = Math.floor((Math.random() * 10) + 1);
+    var playerName;
+    switch(random) {
+        case 1:
+            playerName = "Hot Lady";
+            break;
+        case 2:
+            playerName = "Gamerboy";
+            break;
+        case 3:
+            playerName = "Arnold";
+            break;
+        case 4:
+            playerName = "Göran Persson";
+            break;
+        case 5:
+            playerName = "Fredrik Reinfeldt";
+            break;
+        case 6:
+            playerName = "Stefan Löfven";
+            break;
+        case 7:
+            playerName = "Barack Obama";
+            break;
+        case 8:
+            playerName = "Sadam Hussein";
+            break;
+        case 9:
+            playerName = "Angela Merkel";
+            break;
+        case 10:
+            playerName = "Vlademir Putin";
+            break;
+    }
+    socket.emit("updatePlayerName", playerName);
+}
+
 function setPlayerName() {
     
     var playerName = prompt("Enter your name : ", "your name here");
@@ -59,7 +100,7 @@ function setPlayerName() {
     socket.emit("updatePlayerName", playerName);
 }
 
-function updateCanvas() {
+function updateCanvasLoop() {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -69,7 +110,7 @@ function updateCanvas() {
     
     updateServer(input);
     
-    window.requestAnimationFrame(updateCanvas);
+    window.requestAnimationFrame(updateCanvasLoop);
 }
 
 function updateServer(input) 
@@ -110,19 +151,20 @@ function drawHead(ctx, playerobj)
     ctx.beginPath();
     ctx.arc(playerobj.x, playerobj.y, playerobj.radius/4, 0, 2*Math.PI);
     ctx.closePath();
+    ctx.lineWidth = 10;
     ctx.stroke();
     ctx.fill();
 }
 
 function drawWeapon(ctx, playerobj)
 {
-    var pistolSize=75;
-    ctx.fillStyle = playerobj.color;
+    pistolSize = 75;
+    ctx.fillStyle = "#000000";
     ctx.beginPath();
     ctx.moveTo(playerobj.x,playerobj.y);
     ctx.lineTo(playerobj.x + pistolSize*Math.cos(playerobj.rotation)
             ,playerobj.y + pistolSize*Math.sin(playerobj.rotation));
-    ctx.lineWidth = 15;
+    ctx.lineWidth = 10;
     ctx.stroke();
 }
 
@@ -136,6 +178,7 @@ function drawProjectiles(ctx)
                 ctx.beginPath();
                 ctx.arc(projectile.x, projectile.y, projectile.radius, 0, 2*Math.PI);
                 ctx.closePath();
+                ctx.lineWidth = 15;
                 ctx.stroke();
                 ctx.fill();
         });
@@ -182,11 +225,10 @@ window.onkeydown = function(e) {
         case 57:    // key '9'
             setWeaponSound("Party Horn");
             break;
-            
     }
     if(key === 32) {    // spacekey
         input.shoot = 1;
-        weaponsound.play();
+        if(weaponsound) weaponsound.play();
     }
     
     return false;
