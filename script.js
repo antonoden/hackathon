@@ -2,18 +2,21 @@
 var canvas=document.getElementById("gameWindow");
 var ctx = canvas.getContext("2d");
 
+var jsonObj;
+var playersObj;
+var mapObj;
+
 var input = {
     moveDirection: 0,
     rotDirection: 0,
     shoot: 0
 };
-var jsonObj;
-var playersObj;
-var mapObj;
 
-/* function calls */
-updateCanvas();
-
+init();
+function init() {
+    setPlayerName();
+    updateCanvas(ctx);
+};
 
 function getInfo() {
     console.log(jsonObj);
@@ -49,9 +52,16 @@ function drawMap(ctx) {
     }
 }
 
+function setPlayerName() {
+    
+    var playerName = prompt("Enter your name : ", "your name here");
+    
+    socket.emit("updatePlayerName", playerName);
+}
+
 function updateCanvas() {
     
-    clearCanvas(ctx);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     drawPlayers(ctx);
     drawProjectiles(ctx);
@@ -69,8 +79,9 @@ function updateServer(input)
 }
 
 function clearCanvas(ctx) 
+
 {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
 }
 
 function drawPlayers(ctx)
@@ -88,10 +99,11 @@ function drawPlayers(ctx)
 function drawPlayerName(ctx, playerobj) {
     ctx.font = "20px Georgia";
     ctx.fillText(
-            playerobj.name, 
+            playerobj.displayName, 
             playerobj.x-(playerobj.radius/2), 
             playerobj.y-playerobj.radius-20);
 }
+
 function drawHead(ctx, playerobj)
 {
     ctx.fillStyle = playerobj.color;
