@@ -78,7 +78,6 @@ function updateServer(input)
 }
 
 function clearCanvas(ctx) 
-
 {
     
 }
@@ -117,7 +116,6 @@ function drawHead(ctx, playerobj)
     ctx.closePath();
     ctx.stroke();
     ctx.fill();
-    
 }
 
 function drawWeapon(ctx, playerobj)
@@ -170,17 +168,10 @@ window.onkeydown = function(e) {
     
     if(key === 32) {
         input.shoot = 1;
+        document.getElementById('shootaudio').play();
     }
     
     return false;
-};
-
-window.onkeypress = function(e) {
-    var key = e.keyCode ? e.keyCode : e.which;
-    
-    if(key === 32) {
-        input.shoot = 0;
-    }
 };
 
 /* Key up events
