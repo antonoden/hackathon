@@ -98,12 +98,11 @@ function drawHead(ctx, playerobj)
 
 function drawWeapon(ctx, playerobj)
 {
-    pistolSize = 75;
     ctx.fillStyle = "#000000";
     ctx.beginPath();
     ctx.moveTo(playerobj.x,playerobj.y);
-    ctx.lineTo(playerobj.x + pistolSize*Math.cos(playerobj.rotation)
-            ,playerobj.y + pistolSize*Math.sin(playerobj.rotation));
+    ctx.lineTo(playerobj.x + playerobj.weapon.length*Math.cos(playerobj.rotation)
+            ,playerobj.y + playerobj.weapon.length*Math.sin(playerobj.rotation));
     ctx.lineWidth = 10;
     ctx.stroke();
 }

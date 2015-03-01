@@ -1,4 +1,4 @@
-var SolidBody = require("/var/www/html/jsgame/SolidBody.js");
+var SolidBody = require("C:/Users/Anton/Documents/workspace/hackathon/server/SolidBody.js");
 
 var Projectile = function(radius,speed,x,y,rotation,damage)
 {
@@ -8,7 +8,8 @@ var Projectile = function(radius,speed,x,y,rotation,damage)
   this.y=y;
   this.rotation=rotation;
   this.damage = damage;
-}
+};
+
 Projectile.prototype = Object.create(SolidBody.prototype);
 
 

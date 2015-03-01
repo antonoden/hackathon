@@ -109,7 +109,7 @@ window.onkeydown = function(e) {
     
     switch(e.keyCode) {
         case 38:    // upkey
-            input.moveDirection = 1;
+            input.moveDirection = +1;
             break;
         case 40:    // downkey
             input.moveDirection = -1;
@@ -147,23 +147,17 @@ window.onkeydown = function(e) {
 window.onkeyup = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     
-    switch(e.keyCode) 
-    {
-        case 38: // key up or down
-            input.moveDirection = 0;
-            break;
-        case 40:
-            input.moveDirection = 0;
-            break;
-        case 37: // key left or right
-            input.rotDirection = 0;
-            break;
-        case 39:
-            input.rotDirection = 0;
-            break;
-        case 32: // spacekey
-            input.shoot = 0;
-            break;
+    if(e.KeyCode === 38 && input.moveDirection === +1) {
+        input.moveDirection = 0;
+    }
+    if(e.KeyCode === 40 && input.moveDirection === -1) {
+        input.moveDirection = 0;
+    }
+    else if(e.KeyCode === 39 || e.keyCode === 37) {
+        input.rotDirection = 0;
+    }
+    else if(e.KeyCode === 32) {
+        input.shoot = 0;
     }
     return false;
 };

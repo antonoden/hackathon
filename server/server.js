@@ -1,24 +1,24 @@
 var server = require("http").createServer(router);
-var io = require("socket.io").listen(server,{log:false});
-var Player=require("/var/www/html/jsgame/Player.js");
-var Map = require("/var/www/html/jsgame/Map.js");
-var Projectile = require("/var/www/html/jsgame/Projectile.js");
+var io = require("C:/Windows/System32/node_modules/socket.io/").listen(server,{log:false});
+var Player=require("C:/Users/Anton/Documents/workspace/hackathon/server/Player.js");
+var Map = require("C:/Users/Anton/Documents/workspace/hackathon/server/Map.js");
+var Projectile = require("C:/Users/Anton/Documents/workspace/hackathon/server/Projectile.js");
 
 
 function router (request, response)
 {
     console.info('Connection');
 
-    if (error){
+    if (error) {
       response.writeHead(404);
       response.write("opps this doesn't exist - 404");
       response.end();
-      }
-    else{
+    }
+    else {
       response.writeHead(200, {"Content-Type": "text/html"});
       response.write("slasdopgko", "utf8");
       response.end();
-      }
+    }
 }
 server.listen(8080);
 var sockets= new Array();
@@ -67,13 +67,13 @@ io.sockets.on('connection', function(socket)
   }
   
   players.push(player);
-  socket.player=player
+  socket.player=player;
   socket.emit("gameState",gameState);
   socket.on("disconnect",function(data)
             {
               for(var i = 0; i< players.length;i++)
                 {
-                  if(player==players[i])
+                  if(player===players[i])
                     {
                       players.splice(i,1);
                       break;
@@ -183,4 +183,3 @@ function outOfBounds(object)
     return true;
   return false;
 }
-

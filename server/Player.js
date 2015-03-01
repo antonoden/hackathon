@@ -1,5 +1,5 @@
-var SolidBody = require("/var/www/html/jsgame/SolidBody.js");
-var Weapon = require("/var/www/html/jsgame/Weapon.js");
+var SolidBody = require("C:/Users/Anton/Documents/workspace/hackathon/server/SolidBody.js");
+var Weapon = require("C:/Users/Anton/Documents/workspace/hackathon/server/Weapon.js");
 
 var Player = function(id,x,y)
 {
