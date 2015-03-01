@@ -149,10 +149,16 @@ window.onkeyup = function(e) {
     
     switch(e.keyCode) 
     {
-        case 38 || 40: // key up or down
+        case 38: // key up or down
             input.moveDirection = 0;
             break;
-        case 37 || 39: // key left or right
+        case 40:
+            input.moveDirection = 0;
+            break;
+        case 37: // key left or right
+            input.rotDirection = 0;
+            break;
+        case 39:
             input.rotDirection = 0;
             break;
         case 32: // spacekey
