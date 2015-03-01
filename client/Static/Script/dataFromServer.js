@@ -2,7 +2,7 @@
  * 
  */
 
-var socket = io("http://91.123.198.103:8080");
+var socket = io("http://192.168.0.12:8080");
   
  socket.on("updateMap", function(data){
     mapObj = data.obstacles;
