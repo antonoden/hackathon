@@ -147,17 +147,22 @@ window.onkeydown = function(e) {
 window.onkeyup = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     
-    if(e.KeyCode === 38 && input.moveDirection === +1) {
-        input.moveDirection = 0;
-    }
-    if(e.KeyCode === 40 && input.moveDirection === -1) {
-        input.moveDirection = 0;
-    }
-    else if(e.KeyCode === 39 || e.keyCode === 37) {
-        input.rotDirection = 0;
-    }
-    else if(e.KeyCode === 32) {
-        input.shoot = 0;
+    switch(e.keyCode) {
+        case 38:    // key 'up'
+            input.moveDirection = 0;
+            break;
+        case 40:    // key 'down'
+            input.moveDirection = 0;
+            break;
+        case 37:    // key 'left'
+            input.rotDirection = 0;
+            break;
+        case 39:    // key 'right'
+            input.rotDirection = 0;
+            break;
+        case 32:    // key 'space'
+            input.shoot = 0;
+            break;
     }
     return false;
 };
