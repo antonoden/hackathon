@@ -1,44 +1,33 @@
 /* Initing variables and functions */
-var canvas=document.getElementById("gameWindow");
-var ctx = canvas.getContext("2d");
-
-var jsonObj;
-var playersObj;
-var mapObj;
 var weaponsound;
 
-var input = {
-    moveDirection: 0,
-    rotDirection: 0,
-    shoot: 0
-};
+uAction = new UserActions();
+objects = new Objects();
 
 init();
 function init() {
+    
     setPlayerName(randomPlayerName());
-    updateCanvasLoop(ctx);
+    updateCanvasLoop();
 };
-
-function getInfo() {
-    console.log(jsonObj);
-}
 /*****************************************************************************/
 
 function updateCanvasLoop() {
     
+    var canvas=document.getElementById("gameWindow");
+    var ctx = canvas.getContext("2d");
+    
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    drawPlayers(ctx);
-    drawProjectiles(ctx);
-    drawMap(ctx);
+    new Draw(ctx, objects);
     
-    updateServer(input);
+    updateServer(uAction.input);
     
     window.requestAnimationFrame(updateCanvasLoop);
 }
 
-function updateServer(input) 
-{
+function updateServer(input) {
+    
     socket.emit("update", input);
     input.shoot = 0;
 }
@@ -48,6 +37,7 @@ function randomPlayerName() {
     var random = Math.floor((Math.random() * 10) + 1);
     var playerName;
     switch(random) {
+        
         case 1:
             playerName = "Göran Hägglund";
             break;
@@ -87,17 +77,22 @@ function setPlayerName(playerName) {
     socket.emit("updatePlayerName", playerName);
 }
 
-function setWeaponSound(sound)
-{
+function setWeaponSound(sound) {
+    
     if(sound === "Party Horn") {
+        
         weaponsound = document.getElementById("audio_Party_Horn");
     }
     else if(sound === "50 Cal Machine") {
+        
         weaponsound = document.getElementById("audio_50_Cal_Machine_Gun");
     }
     else if(sound === "Bullet Whizzing") {
+        
         weaponsound = document.getElementById("audio_Bullet_Whizzing");
-    } else {
+    } 
+    else {
+        
         weaponsound = undefined;
     }
 }
@@ -105,20 +100,22 @@ function setWeaponSound(sound)
  * 
  */
 window.onkeydown = function(e) {
+    
     var key = e.keyCode ? e.keyCode : e.which;
     
     switch(e.keyCode) {
+        
         case 38:    // upkey
-            input.moveDirection = +1;
+            uAction.input.moveDirection = +1;
             break;
         case 40:    // downkey
-            input.moveDirection = -1;
+            uAction.input.moveDirection = -1;
             break;
         case 37:    // leftkey
-            input.rotDirection = -1;
+            uAction.input.rotDirection = -1;
             break;
         case 39:    // rightkey
-            input.rotDirection = +1;
+            uAction.input.rotDirection = +1;
             break;
         case 83:    // key 'a'
             setWeaponSound("");
@@ -133,11 +130,10 @@ window.onkeydown = function(e) {
             setWeaponSound("Party Horn");
             break;
         case 32:    // key 'space'
-            input.shoot = 1;
+            uAction.input.shoot = 1;
             if(weaponsound) weaponsound.play();
             break;
     }
-    
     return false;
 };
 
@@ -145,23 +141,25 @@ window.onkeydown = function(e) {
  * 
  */
 window.onkeyup = function(e) {
+    
     var key = e.keyCode ? e.keyCode : e.which;
     
     switch(e.keyCode) {
+        
         case 38:    // key 'up'
-            input.moveDirection = 0;
+            uAction.input.moveDirection = 0;
             break;
         case 40:    // key 'down'
-            input.moveDirection = 0;
+            uAction.input.moveDirection = 0;
             break;
         case 37:    // key 'left'
-            input.rotDirection = 0;
+            uAction.input.rotDirection = 0;
             break;
         case 39:    // key 'right'
-            input.rotDirection = 0;
+            uAction.input.rotDirection = 0;
             break;
         case 32:    // key 'space'
-            input.shoot = 0;
+            uAction.input.shoot = 0;
             break;
     }
     return false;

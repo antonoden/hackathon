@@ -2,15 +2,15 @@
  * 
  */
 
-var socket = io("http://192.168.0.12:8080");
+var socket = io("http://192.168.0.10:1337");
   
  socket.on("updateMap", function(data){
-    mapObj = data.obstacles;
+    objects.mapObjects = data.obstacles;
  });
  
   socket.on("gameState", function(data){
-    jsonObj = data;
-    playersObj = data.players;
+    objects.jsonObject = data;
+    objects.playerObjects = data.players;
   });
   
 
