@@ -1,7 +1,6 @@
 /* Initing variables and functions */
-var weaponsound;
 
-uAction = new UserActions();
+player = new Player();
 objects = new Objects();
 
 init();
@@ -21,7 +20,7 @@ function updateCanvasLoop() {
     
     new Draw(ctx, objects);
     
-    updateServer(uAction.input);
+    updateServer(player.input);
     
     window.requestAnimationFrame(updateCanvasLoop);
 }
@@ -81,19 +80,19 @@ function setWeaponSound(sound) {
     
     if(sound === "Party Horn") {
         
-        weaponsound = document.getElementById("audio_Party_Horn");
+        player.weaponsound = document.getElementById("audio_Party_Horn");
     }
     else if(sound === "50 Cal Machine") {
         
-        weaponsound = document.getElementById("audio_50_Cal_Machine_Gun");
+        player.weaponsound = document.getElementById("audio_50_Cal_Machine_Gun");
     }
     else if(sound === "Bullet Whizzing") {
         
-        weaponsound = document.getElementById("audio_Bullet_Whizzing");
+        player.weaponsound = document.getElementById("audio_Bullet_Whizzing");
     } 
     else {
         
-        weaponsound = undefined;
+        player.weaponsound = undefined;
     }
 }
 /* Key down events 
@@ -106,16 +105,16 @@ window.onkeydown = function(e) {
     switch(e.keyCode) {
         
         case 38:    // upkey
-            uAction.input.moveDirection = +1;
+            player.input.moveDirection = +1;
             break;
         case 40:    // downkey
-            uAction.input.moveDirection = -1;
+            player.input.moveDirection = -1;
             break;
         case 37:    // leftkey
-            uAction.input.rotDirection = -1;
+            player.input.rotDirection = -1;
             break;
         case 39:    // rightkey
-            uAction.input.rotDirection = +1;
+            player.input.rotDirection = +1;
             break;
         case 83:    // key 'a'
             setWeaponSound("");
@@ -130,8 +129,8 @@ window.onkeydown = function(e) {
             setWeaponSound("Party Horn");
             break;
         case 32:    // key 'space'
-            uAction.input.shoot = 1;
-            if(weaponsound) weaponsound.play();
+            player.input.shoot = 1;
+            if(player.weaponsound) player.weaponsound.play();
             break;
     }
     return false;
@@ -147,19 +146,19 @@ window.onkeyup = function(e) {
     switch(e.keyCode) {
         
         case 38:    // key 'up'
-            uAction.input.moveDirection = 0;
+            player.input.moveDirection = 0;
             break;
         case 40:    // key 'down'
-            uAction.input.moveDirection = 0;
+            player.input.moveDirection = 0;
             break;
         case 37:    // key 'left'
-            uAction.input.rotDirection = 0;
+            player.input.rotDirection = 0;
             break;
         case 39:    // key 'right'
-            uAction.input.rotDirection = 0;
+            player.input.rotDirection = 0;
             break;
         case 32:    // key 'space'
-            uAction.input.shoot = 0;
+            player.input.shoot = 0;
             break;
     }
     return false;
