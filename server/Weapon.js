@@ -1,9 +1,8 @@
 var Projectile = require("C:/Users/Anton/Documents/workspace/hackathon/server/Projectile.js");
-var Weapon = function(name,cooldown,player)
+var Weapon = function(name,player)
 {
   this.name = name;
-  this.cooldown = cooldown;
-  this.setWeaponSize();
+  this.setWeaponAttributes(name);
   
   Object.defineProperty(this,'player',
                        {
@@ -14,13 +13,19 @@ var Weapon = function(name,cooldown,player)
                        });
 };
 
-Weapon.prototype.setWeaponSize = function()
+Weapon.prototype.setWeaponAttributes = function(name)
 {
-    if(this.name == "handgun") {
-        this.length = 100;
+    if(name === "handgun") {
+        this.length = 75;
+        this.cooldown = 1000;
+    }
+    else if(name === "machinegun") {
+        this.length = 120;
+        this.cooldown = 100;
     }
     else {
-        this.length = 55;
+        this.length = 75;
+        this.cooldown = 1000;
     }
 };
 

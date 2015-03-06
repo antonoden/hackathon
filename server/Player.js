@@ -14,7 +14,7 @@ var Player = function(id,x,y)
   this.moveSpeed = 4;
   this.rotationSpeed=2*Math.PI/90;
   this.radius=50;
-  this.weapon = new Weapon("handgun",1000,this);
+  this.weapon = new Weapon("handgun",this);
   this.cooldown=false;
   this.dead=false;
 };
@@ -35,5 +35,8 @@ Player.prototype.shoot = function()
   return false;
 };
 
+Player.prototype.newWeapon = function(weaponName) {
+    this.weapon = new Weapon(weaponName, this);
+};
 
 module.exports=Player;

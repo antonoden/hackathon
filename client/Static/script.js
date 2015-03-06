@@ -1,7 +1,8 @@
 /* Initing variables and functions */
 
-player = new Player();
-objects = new Objects();
+var player = new Player();
+var objects = new Objects();
+var soundActivated = false;
 
 init();
 function init() {
@@ -75,26 +76,6 @@ function setPlayerName(playerName) {
     
     socket.emit("updatePlayerName", playerName);
 }
-
-function setWeaponSound(sound) {
-    
-    if(sound === "Party Horn") {
-        
-        player.weaponsound = document.getElementById("audio_Party_Horn");
-    }
-    else if(sound === "50 Cal Machine") {
-        
-        player.weaponsound = document.getElementById("audio_50_Cal_Machine_Gun");
-    }
-    else if(sound === "Bullet Whizzing") {
-        
-        player.weaponsound = document.getElementById("audio_Bullet_Whizzing");
-    } 
-    else {
-        
-        player.weaponsound = undefined;
-    }
-}
 /* Key down events 
  * 
  */
@@ -117,20 +98,24 @@ window.onkeydown = function(e) {
             player.input.rotDirection = +1;
             break;
         case 83:    // key 'a'
-            setWeaponSound("");
+            if(soundActivated === false) soundActivated = true;
+            else soundActivated = false;
             break;
         case 55:    // key '7'
-            setWeaponSound("50 Cal Machine");
+            socket.emit("changeWeapon", "machinegun");
+            player.weapon = "machinegun";
             break;
         case 56:    // key '8'
-            setWeaponSound("Bullet Whizzing");
+            socket.emit("changeWeapon", "handgun");
+            player.weapon = "handgun";
             break;
         case 57:    // key '9'
-            setWeaponSound("Party Horn");
+            socket.emit("changeWeapon", "partyhorn");
+            player.weapon = "partyhorn";
             break;
         case 32:    // key 'space'
             player.input.shoot = 1;
-            if(player.weaponsound) player.weaponsound.play();
+            if(soundActivated) player.playSound();
             break;
     }
     return false;

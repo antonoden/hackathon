@@ -93,6 +93,11 @@ io.sockets.on('connection', function(socket)
             {
               player.displayName=name;
             });
+            
+  socket.on("changeWeapon", function(weapon)
+  {
+      player.newWeapon(weapon);
+  });
 
 });
 
