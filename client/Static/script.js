@@ -98,8 +98,8 @@ window.onkeydown = function(e) {
             player.input.rotDirection = +1;
             break;
         case 83:    // key 'a'
-            if(soundActivated === false) soundActivated = true;
-            else soundActivated = false;
+            if(soundActivated === false) { soundActivated = true; }
+            else { soundActivated = false; }
             break;
         case 55:    // key '7'
             socket.emit("changeWeapon", "machinegun");
@@ -115,7 +115,7 @@ window.onkeydown = function(e) {
             break;
         case 32:    // key 'space'
             player.input.shoot = 1;
-            if(soundActivated) player.playSound();
+            if(soundActivated === true) player.playSound();
             break;
     }
     return false;

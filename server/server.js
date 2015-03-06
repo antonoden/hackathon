@@ -20,7 +20,7 @@ function router (request, response)
       response.end();
     }
 }
-server.listen(1337);
+server.listen(8080);
 var sockets= new Array();
 var players=new Array();
 var gameState={};

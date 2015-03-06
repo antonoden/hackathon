@@ -4,9 +4,10 @@
 if(!cookieExist("serverIP")) {
     
     document.cookie = "serverIP="+prompt("Please enter server IP")+";";
+    document.cookie = "serverPort="+promtp("Please enter server port")+";";
 }
 
-var socket = io("http://"+readCookie("serverIP")+":1337");
+var socket = io("http://"+readCookie("serverIP")+":"+readCookie("serverPort"));
   
 socket.on("updateMap", function(data){
     
