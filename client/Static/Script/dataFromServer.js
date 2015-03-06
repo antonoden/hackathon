@@ -4,7 +4,10 @@
 if(!cookieExist("serverIP")) {
     
     document.cookie = "serverIP="+prompt("Please enter server IP")+";";
-    document.cookie = "serverPort="+promtp("Please enter server port")+";";
+}
+if(!cookieExist("serverPort")) {
+    
+    document.cookie = "serverPort="+prompt("Please enter server port")+";";
 }
 
 var socket = io("http://"+readCookie("serverIP")+":"+readCookie("serverPort"));
@@ -20,6 +23,10 @@ socket.on("gameState", function(data){
     objects.playerObjects = data.players;
 });
   
+function changeServerPort() {
+    
+    document.cookie = "serverPort="+prompt("Please enter server port")+";";
+}
 function changeServerIP() {
     
     document.cookie = "serverIP="+prompt("Please enter server IP")+";";
